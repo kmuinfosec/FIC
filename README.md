@@ -1,4 +1,4 @@
-# Flow-based Intrusion Classification (FIC)
+# Flow Identification for C-ITS (FIC)
 
 This project implements a lightweight, flow-based intrusion detection system using a signature matching algorithm. It generates unique signatures for normal network flows from training data and uses them to detect anomalies in test data.
 
