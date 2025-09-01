@@ -14,10 +14,24 @@ This project implements a lightweight, flow-based intrusion detection system usi
 
 ```
 repo/
-├─ main.py          
-├─ flow2sig.py     
-├─ utils.py        
-└─ requirements.txt
+├─ main.py
+├─ flow2sig.py
+├─ utils.py
+├─ requirements.txt
+├─ README.md
+├─ .gitignore
+├─ docs/
+├─ samples/
+│ ├─ cicids2017_5_features_train_samples.csv
+│ ├─ cicids2017_5_features_test_samples.csv
+│ ├─ cicids2017_79_features_train_samples.csv
+│ └─ cicids2017_79_features_test_samples.csv
+├─ sigsets/
+│ ├─ cicids2017_5_features_trained_sigset.npy
+│ └─ cicids2017_79_features_trained_sigset.npy
+└─ results/
+  ├─ cicids2017_5_features_predictions.csv
+  └─ cicids2017_79_features_predictions.csv
 ```
 
 ---
@@ -90,8 +104,6 @@ python main.py \
 | `--sigset`     | Signature set path (`.npy`). In **train**: save here; in **test**: load from here       | `sigset.npy`       |
 | `--result`     | Path to save predictions (`y_pred`) as CSV                                                              | `predictions.csv`  |
 | `--base`       | Log discretization base (**must be > 1**)                                                               | `2`                |
-
-> If `--base <= 1`, the program exits with an error.
 
 ---
 

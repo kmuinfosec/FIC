@@ -76,7 +76,6 @@ class FIC:
         print("Starting prediction...")
         y_pred = []
         for row in data:
-            # Make each row a 2D array to process it individually.
             row_2d = np.expand_dims(row, axis=0)
             sig = self.flow2sig(row_2d)[0]
             y_pred.append(0 if sig in self.signature_set else 1)
