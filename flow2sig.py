@@ -1,24 +1,37 @@
 import numpy as np
 import hashlib
 import math
-import sys
 
-class SignatureModel:
+class FIC:
     """
     A model that creates signatures based on flow data and uses them
-    to determine normal/abnormal behavior.
+    to determine normal/abnormal behavior via membership checking.
     """
     def __init__(self, base=2):
         """
-        Initializes the model.
-        :param base: The base of the logarithm for signature generation (default: 2)
+        Initialize the model.
+
+        Parameters
+        ----------
+        base : int
+            Logarithm base used for discretization (default: 2).
         """
         self.base = base
         self.signature_set = set()
 
-    def _flow2sig(self, arr):
+    def flow2sig(self, arr):
         """
         Internal function to generate a signature array from an input array.
+
+        Parameters
+        ----------
+        arr : np.ndarray
+            2D array of shape (n_samples, n_features)
+
+        Returns
+        -------
+        np.ndarray
+            1D array of dtype=uint64, length n_samples
         """
         arr = np.asarray(arr, dtype=np.float64)
         np.log1p(arr, out=arr)
@@ -34,32 +47,48 @@ class SignatureModel:
 
     def fit(self, data):
         """
-        Creates a set of normal behavior signatures using training data.
-        :param data: Training data (Numpy array)
+        Create a set of normal behavior signatures using training data.
+
+        Parameters
+        ----------
+        data : np.ndarray
+            Training data (n_samples, n_features).
         """
         print("Starting training...")
-        signatures = self._flow2sig(data)
+        signatures = self.flow2sig(data)
         self.signature_set = set(signatures)
         print(f"Training complete. Generated {len(self.signature_set)} unique signatures.")
 
     def predict(self, data):
         """
-        Predicts whether the test data represents anomalous behavior.
-        :param data: Test data (Numpy array)
-        :return: List of prediction results (0: normal, 1: abnormal)
+        Predict whether the test data represents anomalous behavior.
+
+        Parameters
+        ----------
+        data : np.ndarray
+            Test data (n_samples, n_features).
+
+        Returns
+        -------
+        np.ndarray
+            1D int array (0: benign/in-set, 1: anomalous/out-of-set)
         """
         print("Starting prediction...")
         y_pred = []
         for row in data:
-            # Make each row a 2D array to process it individually.
             row_2d = np.expand_dims(row, axis=0)
-            sig = self._flow2sig(row_2d)[0]
+            sig = self.flow2sig(row_2d)[0]
             y_pred.append(0 if sig in self.signature_set else 1)
         print("Prediction complete.")
         return y_pred
 
-    def get_model_size_mb(self):
+    def set_signature_set(self, signature_set):
         """
-        Returns the memory size of the current model (signature set) in MB.
+        Replace the internal signature set used for membership checks.
+
+        Parameters
+        ----------
+        signature_set : Iterable[int] or set[int]
+            A collection of precomputed signatures (e.g., 64-bit hashes).
         """
-        return sys.getsizeof(self.signature_set) / (1024**2)
+        self.signature_set = signature_set
