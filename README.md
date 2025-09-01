@@ -2,7 +2,9 @@
 
 # Flow Identification for C-ITS (FIC)
 
-![FIC Pipeline](./docs/fic_pipeline.png)
+<p align="center">
+    <img src="docs/fic_pipeline.png" alt="FIC pipeline" width="820">
+</p>
 
 This project implements a lightweight, flow-based intrusion detection system using a **signature matching** algorithm. It generates unique signatures for normal network flows from training data and uses them to detect anomalies in test data.
 
